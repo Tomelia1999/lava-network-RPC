@@ -4,11 +4,14 @@ import type { RpcMetrics, MetricsListener } from '../services/websocketClient';
 
 // Define a default/initial state for metrics
 const initialMetrics: RpcMetrics = {
-    blockNumber: null,
-    chainId: null,
+    totalRequests: 0,
+    successfulRequests: 0,
+    failedRequests: 0,
     successRate: null,
     averageResponseTimeMs: null,
     errorMessages: [],
+    lastBlockNumber: null,
+    lastChainId: null,
 };
 
 export function useRpcMetrics() {

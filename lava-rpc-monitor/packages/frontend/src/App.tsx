@@ -24,10 +24,10 @@ function App() {
                     <StatusIndicator successRate={metrics.successRate} errorMessages={metrics.errorMessages} />
                 </div>
                  <div className="card">
-                    <BlockNumberDisplay blockNumber={metrics.blockNumber} />
+                    <BlockNumberDisplay blockNumber={metrics.lastBlockNumber} />
                 </div>
                  <div className="card">
-                    <ChainIdDisplay chainId={metrics.chainId} />
+                    <ChainIdDisplay chainId={metrics.lastChainId} />
                 </div>
                  <div className="card">
                     <SuccessRateDisplay successRate={metrics.successRate} />

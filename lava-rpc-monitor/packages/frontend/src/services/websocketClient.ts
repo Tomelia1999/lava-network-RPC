@@ -2,12 +2,14 @@
 // This should align with what the backend's metricsService provides
 // Placeholder structure for now:
 export interface RpcMetrics {
-    blockNumber: number | null;
-    chainId: string | null;
-    successRate: number | null; // e.g., 0.995 for 99.5%
-    averageResponseTimeMs: number | null; // in milliseconds
+    totalRequests: number;
+    successfulRequests: number;
+    failedRequests: number;
+    successRate: number | null;
+    averageResponseTimeMs: number | null;
     errorMessages: string[];
-    // Add other relevant metrics as defined by the backend
+    lastBlockNumber: string | null; 
+    lastChainId: string | null; 
 }
 
 // Define the type for the listener function that components will use

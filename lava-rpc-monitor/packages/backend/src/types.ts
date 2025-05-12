@@ -92,12 +92,11 @@ export interface RpcMetrics {
   totalRequests: number;
   successfulRequests: number;
   failedRequests: number;
-  successRate: number; // Percentage (0-100)
-  averageResponseTimeMs: number; // Milliseconds, for successful requests
-  errorMessages: string[]; // Store a list of recent or frequent error messages
-  lastBlockNumber?: string | null;
-  lastChainId?: string | null;
-  // Potentially add more detailed error counts by type/code later
+  successRate: number | null;
+  averageResponseTimeMs: number | null;
+  errorMessages: string[];
+  lastBlockNumber: string | null;
+  lastChainId: string | null;
 }
 
 /**
