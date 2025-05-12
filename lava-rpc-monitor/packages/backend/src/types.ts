@@ -1,0 +1,108 @@
+/**
+ * Generic JSON-RPC Request Structure
+ */
+export interface JsonRpcRequest<TParams = any[]> {
+  jsonrpc: "2.0";
+  method: string;
+  params?: TParams;
+  id: number | string | null;
+}
+
+/**
+ * Generic JSON-RPC Error Object Structure
+ */
+export interface JsonRpcErrorObject {
+  code: number;
+  message: string;
+  data?: any;
+}
+
+/**
+ * Generic JSON-RPC Success Response Structure
+ */
+export interface JsonRpcSuccessResponse<TResult = any> {
+  jsonrpc: "2.0";
+  result: TResult;
+  id: number | string | null;
+}
+
+/**
+ * Generic JSON-RPC Error Response Structure
+ */
+export interface JsonRpcErrorResponse {
+  jsonrpc: "2.0";
+  error: JsonRpcErrorObject;
+  id: number | string | null;
+}
+
+/**
+ * Union type for any JSON-RPC Response
+ */
+export type JsonRpcResponse<TResult = any> =
+  | JsonRpcSuccessResponse<TResult>
+  | JsonRpcErrorResponse;
+
+// -----------------------------------------------------------------------------
+// Specific RPC Method Parameter and Result Types
+// -----------------------------------------------------------------------------
+
+/**
+ * Parameters for `eth_blockNumber`
+ * This method usually takes no parameters.
+ */
+export type EthBlockNumberParams = [];
+
+/**
+ * Result type for `eth_blockNumber` (hex string)
+ */
+export type EthBlockNumberResult = string;
+
+/**
+ * Parameters for `eth_chainId`
+ * This method usually takes no parameters.
+ */
+export type EthChainIdParams = [];
+
+/**
+ * Result type for `eth_chainId` (hex string)
+ */
+export type EthChainIdResult = string;
+
+// -----------------------------------------------------------------------------
+// Metrics Data Structures
+// -----------------------------------------------------------------------------
+
+/**
+ * Structure for a single RPC call attempt record
+ */
+export interface RpcCallRecord {
+  method: string;
+  startTime: number; // Unix timestamp (ms)
+  endTime: number;   // Unix timestamp (ms)
+  isSuccess: boolean;
+  statusCode?: number; // HTTP status code, if applicable
+  error?: JsonRpcErrorObject | { message: string }; // RPC error or other error
+  result?: any;
+}
+
+/**
+ * Structure for aggregated metrics
+ */
+export interface RpcMetrics {
+  totalRequests: number;
+  successfulRequests: number;
+  failedRequests: number;
+  successRate: number; // Percentage (0-100)
+  averageResponseTimeMs: number; // Milliseconds, for successful requests
+  errorMessages: string[]; // Store a list of recent or frequent error messages
+  lastBlockNumber?: string | null;
+  lastChainId?: string | null;
+  // Potentially add more detailed error counts by type/code later
+}
+
+/**
+ * Data broadcasted via WebSocket
+ */
+export interface WebSocketBroadcastData extends RpcMetrics {
+  timestamp: number; // Unix timestamp (ms) of when this data was generated
+} 

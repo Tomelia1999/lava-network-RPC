@@ -1,0 +1,22 @@
+Blockchain Engineer Challenge
+
+The candidate is required to build a monitoring tool that sends requests to the
+public Lava Network RPC endpoint at https://eth1.lava.build using JSON-RPC. The tool
+should monitor the health of the RPC node, track metrics such as request success
+rate, response time, and errors, and display the results in real-time on a user
+interface. The rate limit is 300 requests per 10 seconds.
+The tool should be containerized using Docker for easy deployment and
+scalability.
+Technologies:
+Backend: Node.js with axios or node-fetch for JSON-RPC requests
+Frontend: Any JavaScript framework (e.g., React, Vue)
+Containerization: Docker and Docker Compose
+Rate Limiting: Implement throttling to ensure no more than 300 requests per
+10 seconds
+Testing: Any unit testing library
+Deliverables:
+
+Blockchain Engineer Challenge 1
+
+Documentation: Clear instructions on how to set up and run the tool, including
+how to see and interpret the test results.
