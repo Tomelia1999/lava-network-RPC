@@ -16,7 +16,7 @@ function App() {
     const metrics = useRpcMetrics();
 
     useEffect(() => {
-        // console.log('metrics', metrics); // Keep for debugging if needed
+        console.log('metrics', metrics);
     }, [metrics]);
 
     const plainErrorMessages = metrics.errorMessages.map(e => e.message);
@@ -43,7 +43,6 @@ function App() {
                  <div className="card">
                     <AvgResponseTimeDisplay averageResponseTimeMs={metrics.averageResponseTimeMs} />
                 </div>
-                {/* Span this card across two columns for better chart display if possible, or just add as new cards */}
                 <div className="card chart-card">
                     <ResponseTimeHistogram callRecords={metrics.callRecords || []} />
                 </div>
