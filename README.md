@@ -1,5 +1,7 @@
 # Lava Network RPC Monitoring Tool - Project Plan
 
+![Lava RPC Monitor Screenshot](lavaRpcMonitor.png)
+
 ## 1. Overview
 
 This document outlines the development plan for the Lava Network RPC Monitoring Tool. The tool will monitor the health of the public Lava Network RPC endpoint (`https://eth1.lava.build`), track metrics like request success rate and response time, and display these in real-time on a user interface.
