@@ -6,7 +6,6 @@ import { JsonRpcResponse, JsonRpcErrorObject, RpcCallRecord } from '../src/types
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-// Mock the rate limiter to immediately resolve and allow us to spy on it
 const mockWaitForRateLimitPermission = jest.fn(() => Promise.resolve());
 jest.spyOn(rateLimiter, 'waitForRateLimitPermission').mockImplementation(mockWaitForRateLimitPermission);
 
@@ -15,17 +14,13 @@ const LAVA_RPC_ENDPOINT = 'https://eth1.lava.build';
 describe('RPC Service', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    // Reset request ID if it's module-scoped and not reset elsewhere
-    // (rpcService.ts has a module-scoped requestId that increments)
-    // For simplicity in tests, we can't easily reset it without modifying the module or exporting a reset function.
-    // Tests will thus have an incrementing ID, which is fine for testing functionality.
   });
 
   describe('getBlockNumber', () => {
     it('should fetch block number successfully', async () => {
       const mockRpcResponse: JsonRpcResponse<string> = {
         jsonrpc: '2.0',
-        id: 1, // Expected to change with each call in actual module
+        id: 1,
         result: '0x123abc',
       };
       mockedAxios.post.mockResolvedValueOnce({ data: mockRpcResponse, status: 200 } as AxiosResponse);
@@ -69,7 +64,7 @@ describe('RPC Service', () => {
     it('should handle network error (axios error) for getBlockNumber', async () => {
       const networkError = new Error('Network Failure') as AxiosError;
       networkError.isAxiosError = true;
-      networkError.response = undefined; // No response from server
+      networkError.response = undefined;
       mockedAxios.post.mockRejectedValueOnce(networkError);
 
       const result = await getBlockNumber();
@@ -127,7 +122,7 @@ describe('RPC Service', () => {
     it('should fetch chain ID successfully', async () => {
       const mockRpcResponse: JsonRpcResponse<string> = {
         jsonrpc: '2.0',
-        id: 2, // ID will increment
+        id: 2,
         result: '0x1',
       };
       mockedAxios.post.mockResolvedValueOnce({ data: mockRpcResponse, status: 200 } as AxiosResponse);
@@ -170,17 +165,17 @@ describe('RPC Service', () => {
   it('should increment request ID for subsequent calls', async () => {
     mockedAxios.post.mockResolvedValue({ data: { jsonrpc: '2.0', id: 0, result: '0x0' }, status: 200 });
 
-    await getBlockNumber(); // Call 1
+    await getBlockNumber();
     const firstCallArgs = mockedAxios.post.mock.calls[0][1] as { id: number };
     const firstId = firstCallArgs.id;
 
-    await getChainId(); // Call 2
+    await getChainId();
     const secondCallArgs = mockedAxios.post.mock.calls[1][1] as { id: number };
     const secondId = secondCallArgs.id;
 
     expect(secondId).toBe(firstId + 1);
 
-    await getBlockNumber(); // Call 3
+    await getBlockNumber();
     const thirdCallArgs = mockedAxios.post.mock.calls[2][1] as { id: number };
     const thirdId = thirdCallArgs.id;
     expect(thirdId).toBe(secondId + 1);

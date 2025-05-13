@@ -88,8 +88,11 @@ This document tracks the progress of the Lava Network RPC Monitoring Tool based 
     *   Refactored styling to use global CSS (`index.css`) instead of inline styles.
     *   Implemented a high-contrast dark theme to fix readability issues.
     *   Centralized layout (`.grid-container`) and card (`.card`) styles.
+    *   Fixed error message handling:
+        *   Corrected `RpcMetrics.errorMessages` type in `websocketClient.ts` to `string[]`.
+        *   Updated `App.tsx` to use `metrics.errorMessages` directly.
 *   **Remaining Tasks**:
-    *   **Verification**: Visually confirm the new styles render correctly and improve UX.
+    *   **Verification**: Visually confirm the new styles render correctly and improve UX, and that errors display correctly.
     *   **Component Styling**: Check/refine styles within individual components if needed.
     *   **Data Integration**: Ensure components correctly display data fetched by `useRpcMetrics` (pending backend connection/data source).
     *   **Error Handling**: Enhance display/handling of errors from the RPC endpoint.

@@ -23,7 +23,7 @@ export interface RpcMetrics {
     lastChainId: string | null;
     successRate: number;
     callRecords: any[]; // Changed from RpcCallRecord[] to any[]
-    errorMessages: { timestamp: string; message: string }[];
+    errorMessages: string[];
     syncingStatus: EthSyncingResultObject | false | null;
     // Add other relevant metrics here as they are defined
 }

@@ -19,7 +19,7 @@ function App() {
         console.log('metrics', metrics);
     }, [metrics]);
 
-    const plainErrorMessages = metrics.errorMessages.map(e => e.message);
+    const plainErrorMessages = metrics.errorMessages;
 
     return (
         <React.Fragment>

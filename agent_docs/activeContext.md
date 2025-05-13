@@ -33,9 +33,12 @@ Improving the user interface and experience for the Lava RPC Monitor frontend ap
     *   Refined global styles (body padding, heading size/color).
     *   Added styles for card titles and loading text.
     *   Removed unused button styles and light theme query for simplification.
+*   **Fixed error message handling in `App.tsx`**:
+    *   Updated `RpcMetrics` interface in `lava-rpc-monitor/packages/frontend/src/services/websocketClient.ts` to correctly define `errorMessages` as `string[]` (was `{ timestamp: string; message: string }[]`), aligning with backend data.
+    *   Modified `App.tsx` to use `metrics.errorMessages` directly for `plainErrorMessages`, removing the incorrect `.map(e => e.message)` transformation.
 
 ## Next Steps:
 
-*   Verify the visual appearance and functionality of the frontend application after the style changes.
+*   Verify the visual appearance and functionality of the frontend application after the style changes and error handling fix.
 *   Potentially refine styles within individual components (`src/components/`) if necessary.
-*   Await user feedback/approval on the UI changes. 
+*   Await user feedback/approval on the UI changes and error handling fix. 
