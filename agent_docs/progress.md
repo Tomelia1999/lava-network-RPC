@@ -140,37 +140,29 @@ This document tracks the progress of the Lava Network RPC Monitoring Tool based 
 
 ---
 
-## What Works
+## Progress
 
-Based on initial analysis of the `@lava-rpc-monitor/backend` package:
+### What Works
 
-*   **Core Service Structure**: Services for RPC communication (`rpcService.ts`), metrics calculation (`metricsService.ts`), and WebSocket broadcasting (`websocketService.ts`) are established.
-*   **RPC Polling Logic**: Functionality to query the Lava RPC endpoint (`https://eth1.lava.build`) appears to be implemented within `rpcService.ts`.
-*   **Rate Limiting**: A rate limiter mechanism is in place and has unit tests (`rateLimiter.test.ts`), suggesting it's a functional component.
-*   **Metrics Service**: `metricsService.ts` is present, indicating that logic for transforming RPC responses into monitorable metrics is likely implemented or sketched out.
-*   **WebSocket Service**: `websocketService.ts` exists, suggesting the capability to send data (presumably metrics) to connected clients.
-*   **TypeScript Compilation**: The project is set up to compile TypeScript to JavaScript (`npm run build`).
-*   **Basic Testing**: Unit tests are present for `rpcService.ts` and `rateLimiter.ts`.
-*   **Entry Point**: `src/index.ts` serves as the application's entry point, likely initializing and starting the services.
+-   According to the user, the entire monitoring tool (backend and frontend) is functionally complete and "runs as expected."
+-   This implies:
+    -   JSON-RPC requests are being sent to `https://eth1.lava.build`.
+    -   Metrics (request success rate, response time, errors) are being tracked.
+    -   Results are displayed in real-time on a user interface.
+    -   Rate limiting (300 requests per 10 seconds) is implemented and functional.
+    -   The application is containerized with Docker and presumably runs correctly via Docker Compose.
 
-## What's Left to Build / Verify
+### What's Left to Build/Do
 
-*   **Express.js Integration (if needed)**: The `README.md` mentions Express.js as a possibility for routing. It's unclear if this has been implemented or if current needs are met by WebSockets alone.
-*   **Comprehensive Unit Tests**: Tests for `metricsService.ts` and `websocketService.ts` are not apparent and should be added to ensure reliability.
-*   **End-to-End Testing**: No clear indication of end-to-end tests that verify the flow from RPC polling through metrics calculation to WebSocket broadcast.
-*   **Detailed README**: The "Getting Started" and "Running Tests" sections in `README.md` need to be completed.
-*   **Configuration Management**: How configurations (e.g., RPC endpoint URL, polling intervals, rate limit parameters) are managed is not immediately clear.
-*   **Robust Error Handling and Logging**: While services exist, a detailed review is needed to assess the comprehensiveness of error handling and logging across the application.
-*   **Deployment Strategy**: No information on how the backend service is intended to be deployed or managed in a production environment.
-*   **Frontend Integration Points**: While the WebSocket service is for clients, detailed contracts or examples for frontend integration might be beneficial.
+-   **Code Understanding**: The immediate task is for the user to gain a clear understanding of all parts of the existing codebase.
+-   **Code Cleanup/Refactoring**: Based on the understanding gained, identify and remove any unnecessary code, components, or dependencies.
+-   **Documentation Review**: Ensure the existing documentation (setup, run instructions, test interpretation) is clear and accurate, especially in light of any code removals.
 
-## Progress Status
+### Progress Status
 
-*   **Foundation Laid**: The core backend services and structure are in place.
-*   **Key Features Partially Implemented**: RPC polling, rate limiting, and basic WebSocket communication seem functional at a component level.
-*   **Testing Needs Expansion**: Current tests cover some critical parts, but more comprehensive coverage is needed.
-*   **Documentation Needs Completion**: The `README.md` requires more detail.
-*   **Operational Aspects Undefined**: Deployment, configuration, and advanced monitoring/logging strategies are not yet detailed.
+-   **Development Phase**: Functionally Complete.
+-   **Current Phase**: Code Review, Refinement, and Understanding.
+-   **Overall**: The project is in a late stage, focusing on polish and ensuring the candidate can fully explain the delivered solution.
 
 **What works (as of initial planning):**
 -   N/A - Project is currently in the planning phase. No code has been implemented yet.

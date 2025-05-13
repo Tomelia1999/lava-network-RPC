@@ -1,15 +1,27 @@
 # Product Context: Lava RPC Monitor Backend
 
-## Why This Project Exists
+## Product Context
 
-This project, the backend service for the Lava RPC Monitor, exists to provide real-time monitoring and metrics for the Lava Network RPC endpoint (`https://eth1.lava.build`). It aims to give insights into the health, performance, and reliability of the RPC service.
+### Why This Project Exists
 
-## What Problems It Solves
+This project serves as a home assignment for a Blockchain Engineer challenge. Its primary purpose is to assess the candidate's ability to build a functional monitoring tool according to specified requirements.
 
-1.  **Lack of Visibility**: Provides users and developers with visibility into the operational status of the Lava RPC endpoint.
-2.  **Performance Tracking**: Tracks key performance indicators (KPIs) such as success rate, response time, and error occurrences.
-3.  **Reliability Assessment**: Helps in assessing the reliability of the RPC service over time by collecting and exposing metrics.
-4.  **Proactive Issue Detection**: By monitoring metrics, it can help in the early detection of potential issues with the RPC service.
+### What Problems It Solves
+
+The tool addresses the need to monitor the health and performance of a public RPC endpoint, specifically the Lava Network RPC endpoint (`https://eth1.lava.build`). It aims to provide real-time insights into:
+- RPC node health
+- Request success rates
+- API response times
+- Occurrence of errors
+
+### How It Should Work
+
+The tool should:
+1.  Send JSON-RPC requests to `https://eth1.lava.build`.
+2.  Monitor and track metrics: success rate, response time, and errors.
+3.  Display these metrics in real-time on a user interface.
+4.  Adhere to a rate limit of 300 requests per 10 seconds by implementing appropriate throttling.
+5.  Be containerized using Docker (and Docker Compose) for easy deployment and scalability.
 
 ## How It Should Work
 

@@ -1,5 +1,26 @@
 # System Patterns: Lava RPC Monitor Backend
 
+## System Patterns
+
+### How the System is Built
+
+The system is a monitoring tool comprised of:
+-   **Backend**: A Node.js application responsible for sending JSON-RPC requests to the Lava Network RPC endpoint (`https://eth1.lava.build`). It likely uses libraries like `axios` or `node-fetch` for these HTTP requests.
+-   **Frontend**: A web application built with a JavaScript framework (e.g., React, Vue) that displays the monitored data in real-time.
+-   **Containerization**: The entire application (backend and frontend) is containerized using Docker and orchestrated with Docker Compose for ease of deployment and scalability.
+
+### Key Technical Decisions
+
+-   **RPC Communication**: Uses JSON-RPC to interact with the blockchain endpoint.
+-   **Rate Limiting**: A mechanism is implemented to ensure that requests to the public RPC endpoint do not exceed 300 requests per 10 seconds.
+-   **Technology Stack**: Node.js for the backend, a modern JavaScript framework for the frontend, and Docker for containerization.
+
+### Architecture Patterns
+
+-   **Client-Server Architecture**: The frontend acts as a client, consuming data provided by the backend server.
+-   **Real-time Data Display**: The frontend is expected to update an_user interface in real-time with metrics from the backend.
+-   **Microservices (Potentially)**: While not explicitly stated, the separation of backend and frontend, containerized by Docker Compose, hints at a microservice-like structure, where each part can be developed, deployed, and scaled independently.
+
 ## How the System is Built
 
 The backend system for the Lava RPC Monitor is built as a Node.js application using TypeScript. It follows a service-oriented pattern, with distinct modules for different responsibilities:

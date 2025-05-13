@@ -1,18 +1,21 @@
 # Active Context: Lava RPC Monitor Backend
 
-## What You're Working On Now
+## Active Context
 
-Currently, the task is to understand the existing state of the `@lava-rpc-monitor/backend` package. This involves analyzing its file structure, dependencies, and implemented functionalities to provide a summary of achievements.
+### What We're Working On Now
 
-## Recent Changes
+The current focus is on understanding the existing codebase of the Lava Network RPC monitoring tool. The user intends to ask questions about specific code sections to clarify their purpose. Based on these explanations, the user may want to remove unnecessary code or components.
 
-This is the initial analysis phase. No code changes have been made to the backend package itself yet. The primary activity has been file examination and documentation (Memory Bank creation).
+### Recent Changes
 
-## Next Steps
+The project is reported to be fully functional and "runs as expected."
 
-1.  Complete the initial assessment of the `@backend` package.
-2.  Populate the remaining Memory Bank files (`systemPatterns.md`, `techContext.md`, `progress.md`) with information gathered about the backend.
-3.  Await further instructions from the user regarding development tasks for the backend.
+### Next Steps
+
+1.  The user will provide snippets or paths to code they want to understand.
+2.  I will explain the purpose of the specified code.
+3.  If the code appears unnecessary for the project's core requirements (as defined in `productContext.md` and `instructions.text`), I will suggest its removal.
+4.  The user will decide whether to act on the suggestions.
 
 ## Current Focus: Frontend UI/UX Enhancement
 

@@ -41,6 +41,7 @@
     *   Jest (for unit testing).
 *   **Frontend:**
     *   React (JavaScript library for building user interfaces)
+    *   Recharts (charting library for React, used for data visualization)
     *   Native Browser WebSocket API (or `socket.io-client`) for WebSocket client implementation.
     *   Jest and React Testing Library (for unit and component testing).
 *   **Monorepo Management:**
@@ -79,7 +80,7 @@
 ## Technical Constraints
 
 *   **Lava RPC Endpoint:** `https://eth1.lava.build` is the fixed target for monitoring.
-*   **Rate Limit:** Must adhere to a maximum of 300 requests per 10-second window when communicating with the Lava RPC endpoint.
+*   **Rate Limit:** Must adhere to a maximum of 300 requests per 10 seconds when communicating with the Lava RPC endpoint.
 *   **Real-time Updates:** The frontend must display metrics that update in real-time via WebSockets.
 *   **Browser Compatibility:** Frontend should be compatible with modern web browsers (specific versions not defined but generally latest Chrome, Firefox, Safari, Edge).
 *   **Stateless Services (Primarily):** The backend services are largely stateless, recalculating metrics or passing them through. No persistent database is planned for V1.
@@ -94,4 +95,26 @@
 **Technical Constraints & External Dependencies:**
 -   **Lava Network RPC Endpoint:** `https://eth1.lava.build` (must use JSON-RPC protocol).
 -   **Rate Limit:** Strict adherence to 300 requests per 10 seconds for the Lava RPC endpoint.
--   Internet connectivity required for fetching data from the RPC and for package installations. 
+-   Internet connectivity required for fetching data from the RPC and for package installations.
+
+## Tech Context
+
+### Technologies Used
+
+-   **Backend**: Node.js
+    -   HTTP Client for JSON-RPC: `axios` or `node-fetch` (or similar)
+-   **Frontend**: A JavaScript framework (e.g., React, Vue, Angular)
+-   **Containerization**: Docker, Docker Compose
+-   **Testing**: A unit testing library (e.g., Jest, Mocha, Chai)
+-   **Communication Protocol**: JSON-RPC over HTTPS
+
+### Development Setup
+
+-   The primary development and deployment setup relies on Docker and Docker Compose. This suggests that running `docker-compose up` (or a similar command) should build and start the application.
+-   Clear instructions on setup and running the tool are a required deliverable, implying the setup process should be well-documented within the project.
+
+### Technical Constraints
+
+-   **Rate Limiting**: Strict adherence to a maximum of 300 requests per 10 seconds to the `https://eth1.lava.build` endpoint.
+-   **Public Endpoint**: All interactions are with a public, third-party RPC endpoint.
+-   **Real-time UI**: The frontend must display data in real-time. 
