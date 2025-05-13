@@ -5,10 +5,6 @@ import { getLatestMetrics } from './metricsService';
 const DEFAULT_PORT = 8080;
 let wss: WebSocketServer | null = null;
 
-/**
- * Initializes and starts the WebSocket server.
- * @param port The port number to listen on. Defaults to DEFAULT_PORT.
- */
 export function startWebSocketServer(port: number = DEFAULT_PORT): void {
   if (wss) {
     console.warn('WebSocketServer is already running.');
@@ -24,7 +20,6 @@ export function startWebSocketServer(port: number = DEFAULT_PORT): void {
   wss.on('connection', (ws: WebSocket) => {
     console.log('WebSocket client connected.');
 
-    // Send initial metrics upon connection
     try {
       const currentMetrics = getLatestMetrics();
       ws.send(JSON.stringify(currentMetrics));
@@ -33,9 +28,7 @@ export function startWebSocketServer(port: number = DEFAULT_PORT): void {
     }
 
     ws.on('message', (message: WebSocket.RawData) => {
-      // For now, we don't expect messages from clients, but we can log them.
       console.log('WebSocket client message received:', message.toString());
-      // Example: ws.send(`Server received: ${message}`);
     });
 
     ws.on('close', () => {
@@ -49,17 +42,12 @@ export function startWebSocketServer(port: number = DEFAULT_PORT): void {
 
   wss.on('error', (error: Error) => {
     console.error('WebSocketServer error:', error);
-    wss = null; // Reset wss if server fails to start
+    wss = null;
   });
 }
 
-/**
- * Broadcasts data to all connected WebSocket clients.
- * @param data The data to broadcast (expected to be RpcMetrics).
- */
 export function broadcastMetrics(data: RpcMetrics): void {
   if (!wss) {
-    // console.warn('WebSocketServer is not running. Cannot broadcast metrics.');
     return;
   }
 
@@ -75,9 +63,6 @@ export function broadcastMetrics(data: RpcMetrics): void {
   });
 }
 
-/**
- * Stops the WebSocket server.
- */
 export function stopWebSocketServer(): void {
   if (wss) {
     wss.close((err: Error | undefined) => {
@@ -87,7 +72,6 @@ export function stopWebSocketServer(): void {
       console.log('WebSocketServer stopped.');
       wss = null;
     });
-    // Forcefully close all client connections
     wss.clients.forEach((client: WebSocket) => {
         if (client.readyState === WebSocket.OPEN) {
             client.terminate();

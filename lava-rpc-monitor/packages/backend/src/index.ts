@@ -7,10 +7,8 @@ function main() {
   console.log('Backend service starting...');
 
   try {
-    // Start the metrics service (which includes polling)
     startMetricsService();
 
-    // Start the WebSocket server
     startWebSocketServer(WEBSOCKET_PORT);
 
     console.log('Backend services initialized and running.');
@@ -34,19 +32,16 @@ function gracefulShutdown(signal: string) {
   console.log('Stopping metrics service...');
   stopMetricsService();
 
-  // Allow time for cleanup, then exit
-  // Note: In a real app, you'd wait for stop functions to complete (e.g., via promises/callbacks)
   setTimeout(() => {
     console.log('Shutdown complete.');
     process.exit(0);
-  }, 1000); // Give 1 second for services to attempt to stop
+  }, 1000);
 }
 
 process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
 process.on('uncaughtException', (error) => {
   console.error('Uncaught Exception:', error);
-  // Consider a more robust shutdown or restart mechanism here for production
   gracefulShutdown('uncaughtException'); 
 });
 process.on('unhandledRejection', (reason, promise) => {

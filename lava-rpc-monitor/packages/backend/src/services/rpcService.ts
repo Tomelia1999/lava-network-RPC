@@ -2,7 +2,6 @@ import axios, { AxiosError } from 'axios';
 import {
   JsonRpcRequest,
   JsonRpcResponse,
-  JsonRpcErrorResponse,
   EthBlockNumberParams,
   EthBlockNumberResult,
   EthChainIdParams,
@@ -17,17 +16,11 @@ const LAVA_RPC_ENDPOINT = 'https://eth1.lava.build';
 
 let requestId = 1;
 
-/**
- * Sends a JSON-RPC request to the specified endpoint.
- * @param method The RPC method name.
- * @param params The parameters for the RPC method.
- * @returns A Promise that resolves to the RpcCallRecord.
- */
 async function sendJsonRpcRequest<TParams, TResult>(
   method: string,
   params: TParams
 ): Promise<RpcCallRecord<TResult>> {
-  await waitForRateLimitPermission(); // Wait for permission before proceeding
+  await waitForRateLimitPermission();
 
   const requestData: JsonRpcRequest<TParams> = {
     jsonrpc: '2.0',
@@ -43,12 +36,13 @@ async function sendJsonRpcRequest<TParams, TResult>(
   };
 
   try {
+    const tenSecondsInMS = 10000;
     const response = await axios.post<JsonRpcResponse<TResult>>(
       LAVA_RPC_ENDPOINT,
       requestData,
       {
         headers: { 'Content-Type': 'application/json' },
-        timeout: 10000, // 10-second timeout
+        timeout: tenSecondsInMS,
       }
     );
 
@@ -63,7 +57,6 @@ async function sendJsonRpcRequest<TParams, TResult>(
       callRecord.isSuccess = false;
       callRecord.error = responseData.error;
     } else {
-      // Should not happen with a compliant JSON-RPC server
       callRecord.isSuccess = false;
       callRecord.error = { message: 'Invalid JSON-RPC response structure' };
     }
@@ -98,9 +91,6 @@ async function sendJsonRpcRequest<TParams, TResult>(
   return callRecord as RpcCallRecord<TResult>;
 }
 
-/**
- * Fetches the latest block number.
- */
 export async function getBlockNumber(): Promise<RpcCallRecord<EthBlockNumberResult>> {
   return sendJsonRpcRequest<EthBlockNumberParams, EthBlockNumberResult>(
     'eth_blockNumber',
@@ -108,9 +98,6 @@ export async function getBlockNumber(): Promise<RpcCallRecord<EthBlockNumberResu
   );
 }
 
-/**
- * Fetches the current chain ID.
- */
 export async function getChainId(): Promise<RpcCallRecord<EthChainIdResult>> {
   return sendJsonRpcRequest<EthChainIdParams, EthChainIdResult>(
     'eth_chainId',
@@ -118,33 +105,9 @@ export async function getChainId(): Promise<RpcCallRecord<EthChainIdResult>> {
   );
 }
 
-/**
- * Fetches the syncing status of the Ethereum node.
- */
 export async function getSyncingStatus(): Promise<RpcCallRecord<EthSyncingResult>> {
   return sendJsonRpcRequest<EthSyncingParams, EthSyncingResult>(
     'eth_syncing',
     []
   );
 }
-
-// Example Usage (can be removed or kept for local testing):
-/*
-async function testRpcService() {
-  console.log('Fetching block number...');
-  const blockNumberRecord = await getBlockNumber();
-  console.log('Block Number Record:', blockNumberRecord);
-  if (blockNumberRecord.isSuccess) {
-    console.log('Block Number:', parseInt(blockNumberRecord.result, 16));
-  }
-
-  console.log('\nFetching chain ID...');
-  const chainIdRecord = await getChainId();
-  console.log('Chain ID Record:', chainIdRecord);
-  if (chainIdRecord.isSuccess) {
-    console.log('Chain ID:', parseInt(chainIdRecord.result, 16));
-  }
-}
-
-testRpcService();
-*/ 

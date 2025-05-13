@@ -1,15 +1,15 @@
 import {
   getBlockNumber,
   getChainId,
-  getSyncingStatus // Added for eth_syncing
+  getSyncingStatus
 } from './rpcService';
-import { RpcCallRecord, RpcMetrics, EthSyncingResult, JsonRpcErrorObject } from '../types'; // Ensured EthSyncingResult is here
+import { RpcCallRecord, RpcMetrics, EthSyncingResult, JsonRpcErrorObject } from '../types';
 import { broadcastMetrics } from './websocketService';
 
-const MAX_RECORDS = 100; // Keep records for the last 100 calls
-const POLLING_INTERVAL_MS = 5000; // Poll every 5 seconds
+const MAX_RECORDS = 100;
+const POLLING_INTERVAL_MS = 5000;
 
-const callRecords: RpcCallRecord<any>[] = []; // Made RpcCallRecord generic
+const callRecords: RpcCallRecord<any>[] = [];
 let pollingIntervalId: NodeJS.Timeout | null = null;
 
 let latestMetrics: RpcMetrics = {
@@ -21,28 +21,22 @@ let latestMetrics: RpcMetrics = {
   errorMessages: [],
   lastBlockNumber: null,
   lastChainId: null,
-  syncingStatus: null, // Added for eth_syncing
+  syncingStatus: null,
   callRecords: [],
 };
 
-/**
- * Adds a new RPC call record and ensures the store doesn't exceed MAX_RECORDS.
- * @param record The RpcCallRecord to add.
- */
-function addCallRecord(record: RpcCallRecord<any>): void { // Made RpcCallRecord generic
+
+function addCallRecord(record: RpcCallRecord<any>): void {
   callRecords.push(record);
   if (callRecords.length > MAX_RECORDS) {
-    callRecords.shift(); // Remove the oldest record
+    callRecords.shift();
   }
 }
 
-/**
- * Calculates RPC metrics based on the stored call records.
- */
 function calculateMetrics(): void {
   const numRecords = callRecords.length;
   if (numRecords === 0) {
-    // Preserve last known good values for block number, chain ID, and syncing status if no new records
+
     latestMetrics = {
       totalRequests: 0,
       successfulRequests: 0,
@@ -52,17 +46,17 @@ function calculateMetrics(): void {
       errorMessages: [],
       lastBlockNumber: latestMetrics.lastBlockNumber, 
       lastChainId: latestMetrics.lastChainId,
-      syncingStatus: latestMetrics.syncingStatus, // Retain last known good value for syncingStatus
+      syncingStatus: latestMetrics.syncingStatus, 
       callRecords: [],
     };
-    broadcastMetrics(getLatestMetrics()); // Broadcast even if reset or no records
+    broadcastMetrics(getLatestMetrics());
     return;
   }
 
   let successfulCalls = 0;
   let totalResponseTime = 0;
   const errors: string[] = [];
-  // Initialize with latest known good values, to be updated if new data comes in
+
   let currentBlockNumber: string | null = latestMetrics.lastBlockNumber;
   let currentChainId: string | null = latestMetrics.lastChainId;
   let currentSyncingStatus: EthSyncingResult | null = latestMetrics.syncingStatus;
@@ -71,7 +65,6 @@ function calculateMetrics(): void {
     if (record.isSuccess) {
       successfulCalls++;
       totalResponseTime += (record.endTime - record.startTime);
-      // Update specific metrics based on method type
       if (record.method === 'eth_blockNumber' && typeof record.result === 'string') {
         currentBlockNumber = record.result;
       }
@@ -103,16 +96,13 @@ function calculateMetrics(): void {
     errorMessages: errors.length > 0 ? errors.reverse() : [], 
     lastBlockNumber: currentBlockNumber,
     lastChainId: currentChainId,
-    syncingStatus: currentSyncingStatus, // Added for eth_syncing
-    callRecords: [...callRecords].reverse(), // Return a reversed copy for chronological display (newest first)
+    syncingStatus: currentSyncingStatus,
+    callRecords: [...callRecords].reverse(),
   };
   
   broadcastMetrics(getLatestMetrics());
 }
 
-/**
- * Performs a polling cycle: calls RPC methods, adds records, and recalculates metrics.
- */
 async function performPollingCycle(): Promise<void> {
   console.log(`MetricsService: Performing polling cycle at ${new Date().toISOString()}`);
   try {
@@ -127,15 +117,11 @@ async function performPollingCycle(): Promise<void> {
       if (result.status === 'fulfilled') {
         addCallRecord(result.value);
       } else {
-        // This case should ideally be handled by sendJsonRpcRequest creating an error record.
-        // However, if an unexpected error occurs before that, log it.
         console.error('MetricsService: Unexpected error during an RPC call in polling cycle:', result.reason);
-        // We might want to create a placeholder error record here if sendJsonRpcRequest didn't
       }
     });
 
   } catch (error) {
-    // This catch is for errors in Promise.allSettled itself, which is unlikely.
     console.error('MetricsService: Error during overall polling cycle execution:', error);
   }
   calculateMetrics();
@@ -150,9 +136,9 @@ export function startMetricsService(): void {
     return;
   }
   console.log(`MetricsService: Starting polling every ${POLLING_INTERVAL_MS}ms.`);
-  // Perform an initial poll immediately, then set interval
+
   performPollingCycle().finally(() => {
-    if (!pollingIntervalId) { // Ensure interval is not set multiple times if start is called rapidly
+    if (!pollingIntervalId) {
         pollingIntervalId = setInterval(performPollingCycle, POLLING_INTERVAL_MS);
     }
   });
@@ -171,18 +157,10 @@ export function stopMetricsService(): void {
   }
 }
 
-/**
- * Gets the latest calculated RPC metrics.
- * @returns The current RpcMetrics.
- */
 export function getLatestMetrics(): RpcMetrics {
-  return { ...latestMetrics, callRecords: [...latestMetrics.callRecords] }; // Return a deep copy for callRecords
+  return { ...latestMetrics, callRecords: [...latestMetrics.callRecords] };
 }
 
-/**
- * Clears all stored call records and resets metrics.
- * Primarily for testing purposes.
- */
 export function resetMetricsState(): void {
   callRecords.length = 0;
   latestMetrics = {
@@ -198,6 +176,4 @@ export function resetMetricsState(): void {
     callRecords: [],
   };
   console.log('MetricsService: State reset.');
-  // Optionally broadcast reset state if needed, e.g., for immediate UI update
-  // broadcastMetrics(getLatestMetrics()); 
 } 
