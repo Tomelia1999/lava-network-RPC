@@ -68,6 +68,18 @@ export type EthChainIdParams = [];
  */
 export type EthChainIdResult = string;
 
+// New types for eth_syncing
+export type EthSyncingParams = [];
+
+export interface EthSyncingResultObject {
+  startingBlock: string;
+  currentBlock: string;
+  highestBlock: string;
+}
+
+// eth_syncing can return false OR an object
+export type EthSyncingResult = false | EthSyncingResultObject;
+
 // -----------------------------------------------------------------------------
 // Metrics Data Structures
 // -----------------------------------------------------------------------------
@@ -75,14 +87,14 @@ export type EthChainIdResult = string;
 /**
  * Structure for a single RPC call attempt record
  */
-export interface RpcCallRecord {
+export interface RpcCallRecord<TResult = any> {
   method: string;
   startTime: number; // Unix timestamp (ms)
   endTime: number;   // Unix timestamp (ms)
   isSuccess: boolean;
   statusCode?: number; // HTTP status code, if applicable
   error?: JsonRpcErrorObject | { message: string }; // RPC error or other error
-  result?: any;
+  result?: TResult;
 }
 
 /**
@@ -97,7 +109,8 @@ export interface RpcMetrics {
   errorMessages: string[];
   lastBlockNumber: string | null;
   lastChainId: string | null;
-  callRecords: RpcCallRecord[];
+  syncingStatus: EthSyncingResult | null;
+  callRecords: RpcCallRecord<any>[];
 }
 
 /**

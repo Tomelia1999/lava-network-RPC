@@ -7,6 +7,8 @@ import {
   EthBlockNumberResult,
   EthChainIdParams,
   EthChainIdResult,
+  EthSyncingParams,
+  EthSyncingResult,
   RpcCallRecord
 } from '../types';
 import { waitForRateLimitPermission } from '../utils/rateLimiter';
@@ -24,7 +26,7 @@ let requestId = 1;
 async function sendJsonRpcRequest<TParams, TResult>(
   method: string,
   params: TParams
-): Promise<RpcCallRecord> {
+): Promise<RpcCallRecord<TResult>> {
   await waitForRateLimitPermission(); // Wait for permission before proceeding
 
   const requestData: JsonRpcRequest<TParams> = {
@@ -35,7 +37,7 @@ async function sendJsonRpcRequest<TParams, TResult>(
   };
 
   const startTime = Date.now();
-  let callRecord: Partial<RpcCallRecord> = {
+  let callRecord: Partial<RpcCallRecord<TResult>> = {
     method,
     startTime,
   };
@@ -93,13 +95,13 @@ async function sendJsonRpcRequest<TParams, TResult>(
       callRecord.error = { message: 'An unknown error occurred' };
     }
   }
-  return callRecord as RpcCallRecord;
+  return callRecord as RpcCallRecord<TResult>;
 }
 
 /**
  * Fetches the latest block number.
  */
-export async function getBlockNumber(): Promise<RpcCallRecord> {
+export async function getBlockNumber(): Promise<RpcCallRecord<EthBlockNumberResult>> {
   return sendJsonRpcRequest<EthBlockNumberParams, EthBlockNumberResult>(
     'eth_blockNumber',
     []
@@ -109,9 +111,19 @@ export async function getBlockNumber(): Promise<RpcCallRecord> {
 /**
  * Fetches the current chain ID.
  */
-export async function getChainId(): Promise<RpcCallRecord> {
+export async function getChainId(): Promise<RpcCallRecord<EthChainIdResult>> {
   return sendJsonRpcRequest<EthChainIdParams, EthChainIdResult>(
     'eth_chainId',
+    []
+  );
+}
+
+/**
+ * Fetches the syncing status of the Ethereum node.
+ */
+export async function getSyncingStatus(): Promise<RpcCallRecord<EthSyncingResult>> {
+  return sendJsonRpcRequest<EthSyncingParams, EthSyncingResult>(
+    'eth_syncing',
     []
   );
 }
