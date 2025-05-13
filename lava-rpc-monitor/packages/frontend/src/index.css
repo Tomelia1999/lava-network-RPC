@@ -85,6 +85,14 @@ h1 {
     grid-column: span 2; /* Make error log span 2 columns */
 }
 
+/* Specific style for chart cards to give them more space */
+.card.chart-card {
+    grid-column: span 2; /* Make chart cards span 2 columns */
+    /* If the grid typically shows 3 or more columns, 
+       you might prefer span 2. If it's often 2 columns, 
+       this will make each chart take full width on those rows. */
+}
+
 
 /* Remove button styles and light theme media query for simplification */
 /*

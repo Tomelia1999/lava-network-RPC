@@ -6,6 +6,7 @@ const MAX_RECORDS = 100; // Keep records for the last 100 calls
 const POLLING_INTERVAL_MS = 5000; // Poll every 5 seconds
 
 const callRecords: RpcCallRecord[] = [];
+
 let latestMetrics: RpcMetrics = {
   totalRequests: 0,
   successfulRequests: 0,
@@ -15,6 +16,7 @@ let latestMetrics: RpcMetrics = {
   errorMessages: [],
   lastBlockNumber: null,
   lastChainId: null,
+  callRecords: [],
 };
 
 let pollingIntervalId: NodeJS.Timeout | null = null;
@@ -45,6 +47,7 @@ function calculateMetrics(): void {
       errorMessages: [],
       lastBlockNumber: latestMetrics.lastBlockNumber, // Retain last known good values
       lastChainId: latestMetrics.lastChainId,
+      callRecords: [],
     };
     return;
   }
@@ -92,6 +95,7 @@ function calculateMetrics(): void {
     errorMessages: errors.reverse(), // Show newest errors first
     lastBlockNumber: currentBlockNumber,
     lastChainId: currentChainId,
+    callRecords: callRecords,
   };
   
   // Broadcast the newly calculated metrics
@@ -176,6 +180,7 @@ export function resetMetricsState(): void {
     errorMessages: [],
     lastBlockNumber: null,
     lastChainId: null,
+    callRecords: [],
   };
   console.log('MetricsService: State reset.');
   // Optionally broadcast reset state if websocket service is running

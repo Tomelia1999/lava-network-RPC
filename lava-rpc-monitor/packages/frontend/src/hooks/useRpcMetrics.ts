@@ -12,6 +12,7 @@ const initialMetrics: RpcMetrics = {
     errorMessages: [],
     lastBlockNumber: null,
     lastChainId: null,
+    callRecords: [],
 };
 
 export function useRpcMetrics() {

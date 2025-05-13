@@ -6,6 +6,8 @@ import SuccessRateDisplay from './components/SuccessRateDisplay';
 import AvgResponseTimeDisplay from './components/AvgResponseTimeDisplay';
 import ErrorLogDisplay from './components/ErrorLogDisplay';
 import StatusIndicator from './components/StatusIndicator';
+import ResponseTimeHistogram from './components/graphical_vis/ResponseTimeHistogram';
+import SuccessRateChart from './components/graphical_vis/SuccessRateChart';
 
 import './index.css';
 
@@ -13,7 +15,7 @@ function App() {
     const metrics = useRpcMetrics();
 
     useEffect(() => {
-        console.log('metrics', metrics);
+        // console.log('metrics', metrics); // Keep for debugging if needed
     }, [metrics]);
 
     return (
@@ -34,6 +36,13 @@ function App() {
                 </div>
                  <div className="card">
                     <AvgResponseTimeDisplay averageResponseTimeMs={metrics.averageResponseTimeMs} />
+                </div>
+                {/* Span this card across two columns for better chart display if possible, or just add as new cards */}
+                <div className="card chart-card">
+                    <ResponseTimeHistogram callRecords={metrics.callRecords || []} />
+                </div>
+                <div className="card chart-card">
+                    <SuccessRateChart currentSuccessRate={metrics.successRate} />
                 </div>
                  <div className="card error-log">
                     <ErrorLogDisplay errorMessages={metrics.errorMessages} />

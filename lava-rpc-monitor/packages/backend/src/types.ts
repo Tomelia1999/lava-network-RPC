@@ -97,6 +97,7 @@ export interface RpcMetrics {
   errorMessages: string[];
   lastBlockNumber: string | null;
   lastChainId: string | null;
+  callRecords: RpcCallRecord[];
 }
 
 /**

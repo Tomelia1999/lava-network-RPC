@@ -1,6 +1,17 @@
 // Define the structure for the metrics data we expect from the backend
 // This should align with what the backend's metricsService provides
-// Placeholder structure for now:
+
+// Define the expected structure of a single call record
+export interface CallRecord {
+  method: string;
+  startTime: number;
+  endTime: number;
+  statusCode: number;
+  isSuccess: boolean;
+  result?: any; // Can be any type or undefined if error
+  error?: string;
+}
+
 export interface RpcMetrics {
     totalRequests: number;
     successfulRequests: number;
@@ -10,6 +21,7 @@ export interface RpcMetrics {
     errorMessages: string[];
     lastBlockNumber: string | null; 
     lastChainId: string | null; 
+    callRecords: CallRecord[]; // Added callRecords property
 }
 
 // Define the type for the listener function that components will use
