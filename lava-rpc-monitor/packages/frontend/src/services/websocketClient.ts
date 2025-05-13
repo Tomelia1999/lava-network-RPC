@@ -12,16 +12,20 @@ export interface CallRecord {
   error?: string;
 }
 
+import type { EthSyncingResultObject } from '../types/apiTypes'; // Corrected to type-only import
+
 export interface RpcMetrics {
     totalRequests: number;
     successfulRequests: number;
-    failedRequests: number;
-    successRate: number | null;
-    averageResponseTimeMs: number | null;
-    errorMessages: string[];
-    lastBlockNumber: string | null; 
-    lastChainId: string | null; 
-    callRecords: CallRecord[]; // Added callRecords property
+    errorCount: number;
+    averageResponseTimeMs: number;
+    lastBlockNumber: string | null;
+    lastChainId: string | null;
+    successRate: number;
+    callRecords: any[]; // Changed from RpcCallRecord[] to any[]
+    errorMessages: { timestamp: string; message: string }[];
+    syncingStatus: EthSyncingResultObject | false | null;
+    // Add other relevant metrics here as they are defined
 }
 
 // Define the type for the listener function that components will use

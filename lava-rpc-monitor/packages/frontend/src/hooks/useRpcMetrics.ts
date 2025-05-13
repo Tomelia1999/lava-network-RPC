@@ -6,13 +6,14 @@ import type { RpcMetrics, MetricsListener } from '../services/websocketClient';
 const initialMetrics: RpcMetrics = {
     totalRequests: 0,
     successfulRequests: 0,
-    failedRequests: 0,
-    successRate: null,
-    averageResponseTimeMs: null,
+    errorCount: 0,
+    successRate: 0,
+    averageResponseTimeMs: 0,
     errorMessages: [],
     lastBlockNumber: null,
     lastChainId: null,
     callRecords: [],
+    syncingStatus: null,
 };
 
 export function useRpcMetrics() {
