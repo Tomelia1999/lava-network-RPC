@@ -131,23 +131,16 @@ This section provides instructions on how to set up, run the Lava Network RPC Mo
     -   **Decreasing Success Rate or Increasing Response Time:** May indicate issues with the RPC endpoint or network connectivity.
     -   **Error Count:** Investigate specific errors shown in the log to diagnose problems. The logs might indicate rate limiting, invalid requests, or server-side errors from the RPC endpoint.
 
-### Running Tests
+### Backend Unit Tests
 
-Unit testing is implemented for the backend.
+The backend includes unit tests to ensure the reliability of core functionalities. To run these tests, navigate to the `packages/backend` directory and execute `npm test`.
 
--   **Running Backend Tests:**
-    Navigate to the backend directory and run the test script:
-    ```bash
-    cd packages/backend
-    npm test
-    ```
-    (Assuming `npm test` is configured in `packages/backend/package.json` to run the tests.)
+The tests cover two main areas:
 
--   **Interpreting Backend Test Results:**
-    -   Test runners (e.g., Jest, Mocha, Vitest for backend; Jest, React Testing Library for frontend) will output the results to the console.
-    -   **Pass:** All tests passed, indicating the code behaves as expected under test conditions.
-    -   **Fail:** One or more tests failed. The output will typically show which tests failed, the specific assertions that were not met, and a stack trace to help locate the issue in the code.
-    -   **Coverage Reports:** Test runners can also generate coverage reports (e.g., in an `html` format in a `coverage/` directory) showing which parts of the codebase are covered by tests. Aim for high test coverage.
+*   **`rateLimiter.test.ts`**: These tests verify the rate-limiting logic. They ensure that the system correctly allows requests up to the defined limit within a time window, blocks excess requests, and properly manages request counts over time and under concurrent load. The ability to reset the limiter's state is also tested.
+*   **`rpcService.test.ts`**: These tests focus on the service responsible for interacting with the Lava RPC endpoint. They mock external calls to simulate various scenarios, including successful responses, JSON-RPC specific errors, network errors (like timeouts or connectivity issues), and malformed responses. The tests confirm that `eth_blockNumber` and `eth_chainId` calls are correctly formatted, that rate limiting is respected before each call, and that responses and errors are processed into a standardized internal format. It also checks for the correct incrementing of request IDs.
+
+Successful execution of these tests indicates that these key components of the backend are functioning as expected.
 
 ### Stopping the Application
 
